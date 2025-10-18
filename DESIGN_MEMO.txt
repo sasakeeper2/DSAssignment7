@@ -1,0 +1,17 @@
+Design Memo
+
+Why is a tree appropriate for the doctor structure?
+A tree models hierarchical relationships naturally: each node (doctor) can have direct reports (children) and a single supervisor (parent). This mirrors organizational charts where managers oversee subteams. A binary tree is a simple constrained form that lets us practice recursive traversal algorithms while still representing left/right report relationships.
+
+When might a software engineer use preorder, inorder, or postorder traversals?
+- Preorder (root, left, right) is useful for copying or serializing a structure where you want the parent before its children (e.g., producing a hierarchical report, exporting an org chart).
+- Inorder (left, root, right) is meaningful for binary search trees because it visits nodes in sorted order; in general trees it is used when processing left-side data before a parent and then right-side data.
+- Postorder (left, right, root) is used when children must be processed before their parent — e.g., computing resource cleanup, aggregating metrics from leaves up to the root, or determining dependencies that must be resolved before a parent task.
+
+How do heaps help simulate real-time systems like emergency intake?
+Heaps provide an efficient priority queue: insertions and removals run in O(log n) while peek is O(1). For an emergency intake system, new patients arrive continuously and must be ordered by urgency so the most critical case is served first. A min-heap returns the lowest urgency value (highest priority) quickly and maintains the complete binary-tree shape for predictable performance. This ensures the system can scale and provide low-latency scheduling decisions even under high load.
+
+Implementation notes and edge cases
+- DoctorTree.insert returns False when the specified parent isn't found; it raises ValueError for invalid side strings. Root can be set directly or by inserting when tree is empty with parent_name None.
+- Patient enforces urgency as an integer between 1 and 10 and raises on invalid input.
+- MinHeap.peek/remove_min return None on empty heap so callers can detect an empty queue.
